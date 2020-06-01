@@ -1,5 +1,5 @@
-# STEP 8 EXERCISE 2
-# Modify your program to only print the students whose name begins with a specific letter.
+# STEP 8 EXERCISE 3
+# Modify your program to only print the students whose name is shorter than 12 characters.
 
 def input_students
   puts "Please enter the names of the students"
@@ -27,7 +27,7 @@ end
 def print(students)
   x = 1
   students.each do |student|
-    if student[:name][0].upcase == "A"
+    if student[:name].length >= 12
       puts "#{x} #{student[:name]} (#{student[:cohort]} cohort)"
       x += 1
     end
