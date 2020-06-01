@@ -1,5 +1,5 @@
-# STEP 8 EXERCISE 3
-# Modify your program to only print the students whose name is shorter than 12 characters.
+# STEP 8 EXERCISE 4
+# Rewrite the each() method that prints all students using while or until control flow methods
 
 def input_students
   puts "Please enter the names of the students"
@@ -25,12 +25,10 @@ def print_header
 end
 
 def print(students)
-  x = 1
-  students.each do |student|
-    if student[:name].length >= 12
-      puts "#{x} #{student[:name]} (#{student[:cohort]} cohort)"
-      x += 1
-    end
+  x = 0
+  while x <= students.length - 1 do 
+    puts "#{x + 1} #{students[x][:name]} (#{students[x][:cohort]} cohort)"
+    x += 1
   end
 end
 
