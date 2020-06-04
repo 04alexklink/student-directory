@@ -3,15 +3,15 @@
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = gets.chomp
-  cohort = gets.chomp
+  name = STDIN.gets.chomp
+  cohort = STDIN.gets.chomp
   while !name.empty? do
     cohort = "Unknown" if cohort.empty?
     @students << {name: name, cohort: cohort.to_sym, age: :"25", hobbies: :Tennis}
     puts "Now we have #{@students.count} student" if @students.length == 1
     puts "Now we have #{@students.count} students" if @students.length >= 2
-    name = gets.chomp
-    cohort = gets.chomp
+    name = STDIN.gets.chomp
+    cohort = STDIN.gets.chomp
   end
 end
 
@@ -72,7 +72,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -88,9 +88,9 @@ def save_students
   file.close
 end
 
-def load_students
+def load_students(filename = "students.csv")
   #open the file for reading
-  file = File.open("students.csv", "r")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age, hobbies = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym, age: age, hobbies: hobbies}
@@ -98,5 +98,18 @@ def load_students
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first #first argument from the command line
+  return if filename.nil? #get out of the method if it isn't given
+  if File.exists?(filename) #if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else #if it doesn't exist
+  puts "Sorry, but #{filename} doesn't exist."
+  exit #quit
+  end
+end
+
+try_load_students
 interactive_menu
 
