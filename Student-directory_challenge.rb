@@ -1,11 +1,5 @@
-#How could you make the program load students.csv by default if no file is given on startup? 
-#Which methods would you need to change?
-# I changed def try_load_students to set filename equal to students.csv file if no argument passed.
-# previously it was exiting the method if no argument filename was added. 
-# As a result of this change, also removed the set default filename to students.csv in the argument 
-# paramater of the load_students(filename = "students.csv") as it's now unnecessary. 
-
-
+#Continue refactoring the code. Which method is a bit too long? What method names are not clear enough?
+#Anything else you'd change to make your code look more elegant? Why?
 @students = [] # an empty array accessible to all methods
 
 def input_students
@@ -54,22 +48,13 @@ def show_students
   print_footer
 end
 
-def process(selection)
+def menu_selection(selection)
   case selection 
-    when "1"
-      #input the students
-      input_students
-    when "2"
-      #show the students
-      show_students
-    when "3"
-      #save the students
-      save_students
-    when "4"
-      #load the students
-      load_students
-    when "9"
-      exit # this will cause the program to terminate
+    when "1" then input_students
+    when "2" then show_students
+    when "3" then save_students
+    when "4" then load_students
+    when "9" then exit # this will cause the program to terminate
     else 
       puts "I don't know what you meant. Try again please."
   end 
@@ -78,7 +63,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    menu_selection(STDIN.gets.chomp)
   end
 end
 
@@ -91,9 +76,7 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:age], student[:hobbies]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    file.puts [student[:name], student[:cohort], student[:age], student[:hobbies]].join(",")
   end
   file.close
 end
@@ -108,9 +91,8 @@ def load_students(filename)
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first #first argument from the command line
-  filename = "students.csv" if filename.nil? #get out of the method if it isn't given
+def default_file_startup
+  ARGV.first.nil? ? filename = "students.csv" : filename = ARGV.first 
   if File.exists?(filename) #if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
@@ -120,6 +102,6 @@ def try_load_students
   end
 end
 
-try_load_students
+default_file_startup
 interactive_menu
 
