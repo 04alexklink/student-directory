@@ -1,21 +1,23 @@
+#How could you make the program load students.csv by default if no file is given on startup? 
+#Which methods would you need to change?
+# I changed def try_load_students to set filename equal to students.csv file if no argument passed.
+# previously it was exiting the method if no argument filename was added. 
+# As a result of this change, also removed the set default filename to students.csv in the argument 
+# paramater of the load_students(filename = "students.csv") as it's now unnecessary. 
+
+
 @students = [] # an empty array accessible to all methods
 
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = STDIN.gets.chomp
-  cohort = STDIN.gets.chomp
-  age = "25".to_sym
-  hobbies = :Tennis
+  name, cohort, age, hobbies = STDIN.gets.chomp, STDIN.gets.chomp, "25".to_sym, :Tennis
   while !name.empty? do
     cohort = "Unknown" if cohort.empty?
     add_students(name, cohort, age, hobbies)
     puts "Now we have #{@students.count} student" if @students.length == 1
     puts "Now we have #{@students.count} students" if @students.length >= 2
-    name = STDIN.gets.chomp
-    cohort = STDIN.gets.chomp
-    age = "25".to_sym
-    hobbies = :Tennis
+    name, cohort, age, hobbies = STDIN.gets.chomp, STDIN.gets.chomp, "25".to_sym, :Tennis
   end
 end
 
@@ -96,7 +98,7 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename)
   #open the file for reading
   file = File.open(filename, "r")
   file.readlines.each do |line|
@@ -108,7 +110,7 @@ end
 
 def try_load_students
   filename = ARGV.first #first argument from the command line
-  return if filename.nil? #get out of the method if it isn't given
+  filename = "students.csv" if filename.nil? #get out of the method if it isn't given
   if File.exists?(filename) #if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
