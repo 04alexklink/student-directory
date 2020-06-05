@@ -5,13 +5,17 @@ def input_students
   puts "To finish, just hit return twice"
   name = STDIN.gets.chomp
   cohort = STDIN.gets.chomp
+  age = "25".to_sym
+  hobbies = :Tennis
   while !name.empty? do
     cohort = "Unknown" if cohort.empty?
-    @students << {name: name, cohort: cohort.to_sym, age: :"25", hobbies: :Tennis}
+    add_students(name, cohort, age, hobbies)
     puts "Now we have #{@students.count} student" if @students.length == 1
     puts "Now we have #{@students.count} students" if @students.length >= 2
     name = STDIN.gets.chomp
     cohort = STDIN.gets.chomp
+    age = "25".to_sym
+    hobbies = :Tennis
   end
 end
 
@@ -76,6 +80,10 @@ def interactive_menu
   end
 end
 
+def add_students(name, cohort, age, hobbies)
+  @students << {name: name, cohort: cohort.to_sym, age: age, hobbies: hobbies}
+end
+
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
@@ -93,7 +101,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, age, hobbies = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym, age: age, hobbies: hobbies}
+    add_students(name, cohort, age, hobbies)
   end
   file.close
 end
