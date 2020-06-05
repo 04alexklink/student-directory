@@ -1,5 +1,6 @@
-#Continue refactoring the code. Which method is a bit too long? What method names are not clear enough?
-#Anything else you'd change to make your code look more elegant? Why?
+#Right now, when the user choses an option from our menu, there's no way of them knowing if 
+#the action was successful. Can you fix this and implement feedback messages for the user?
+# I added puts statements in my menu_selection method. 
 @students = [] # an empty array accessible to all methods
 
 def input_students
@@ -50,11 +51,16 @@ end
 
 def menu_selection(selection)
   case selection 
-    when "1" then input_students
-    when "2" then show_students
-    when "3" then save_students
-    when "4" then load_students
-    when "9" then exit # this will cause the program to terminate
+    when "1" then puts "You chose 'Input the students" 
+      input_students
+    when "2" then puts "You chose 'Show the students'"
+      show_students
+    when "3" then puts "You chose 'Save the list to students.csv'"
+      save_students
+    when "4" then puts "You chose 'Load the saved students from students.csv'"
+      load_students
+    when "9" then puts "You chose 'exit'"
+      exit # this will cause the program to terminate
     else 
       puts "I don't know what you meant. Try again please."
   end 
@@ -81,7 +87,7 @@ def save_students
   file.close
 end
 
-def load_students(filename)
+def load_students(filename = "students.csv")
   #open the file for reading
   file = File.open(filename, "r")
   file.readlines.each do |line|
