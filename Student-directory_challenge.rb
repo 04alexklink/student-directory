@@ -1,6 +1,6 @@
-#Right now, when the user choses an option from our menu, there's no way of them knowing if 
-#the action was successful. Can you fix this and implement feedback messages for the user?
-# I added puts statements in my menu_selection method. 
+#We are opening and closing the files manually. Read the documentation of the File class to find
+#out how to use a code block (do...end) to access a file, so that we didn't have to close it explicitly
+#(it will be closed automatically when the block finishes). Refactor the code to use a code block.
 @students = [] # an empty array accessible to all methods
 
 def input_students
@@ -79,22 +79,22 @@ end
 
 def save_students
   # open the file for writing
-  file = File.open("students.csv", "w")
+  File.open("students.csv", "w") do |file|
   # iterate over array of students
-  @students.each do |student|
-    file.puts [student[:name], student[:cohort], student[:age], student[:hobbies]].join(",")
+    @students.each do |student|
+      file.puts [student[:name], student[:cohort], student[:age], student[:hobbies]].join(",")
+    end
   end
-  file.close
 end
 
 def load_students(filename = "students.csv")
   #open the file for reading
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort, age, hobbies = line.chomp.split(",")
-    add_students(name, cohort, age, hobbies)
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort, age, hobbies = line.chomp.split(",")
+      add_students(name, cohort, age, hobbies)
+    end
   end
-  file.close
 end
 
 def default_file_startup
@@ -110,4 +110,3 @@ end
 
 default_file_startup
 interactive_menu
-
