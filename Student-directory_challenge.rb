@@ -1,6 +1,7 @@
-#We are opening and closing the files manually. Read the documentation of the File class to find
-#out how to use a code block (do...end) to access a file, so that we didn't have to close it explicitly
-#(it will be closed automatically when the block finishes). Refactor the code to use a code block.
+#We are de-facto using CSV format to store data. However, Ruby includes a library to work with 
+#the CSV files that we could use instead of working directly with the files. Refactor the code 
+#to use this library.
+require "csv"
 @students = [] # an empty array accessible to all methods
 
 def input_students
@@ -79,21 +80,30 @@ end
 
 def save_students
   # open the file for writing
-  File.open("students.csv", "w") do |file|
+  #File.open("students.csv", "w") do |file|
   # iterate over array of students
+  #  @students.each do |student|
+   #   file.puts [student[:name], student[:cohort], student[:age], student[:hobbies]].join(",")
+  #  end
+  #end
+  CSV.open("students.csv", "w") do |csv|
     @students.each do |student|
-      file.puts [student[:name], student[:cohort], student[:age], student[:hobbies]].join(",")
+      csv << [student[:name], student[:cohort], student[:age], student[:hobbies]]
     end
   end
 end
 
 def load_students(filename = "students.csv")
   #open the file for reading
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort, age, hobbies = line.chomp.split(",")
-      add_students(name, cohort, age, hobbies)
-    end
+  #File.open(filename, "r") do |file|
+   # file.readlines.each do |line|
+    #  name, cohort, age, hobbies = line.chomp.split(",")
+     # add_students(name, cohort, age, hobbies)
+    #end
+  #end
+  CSV.foreach(filename) do |row|
+    name, cohort, age, hobbies = row
+    add_students(name, cohort, age, hobbies)
   end
 end
 
